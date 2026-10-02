@@ -24,20 +24,21 @@ the only right answer. Same layout as the Drive folders:
       includes/app_settings.php   $appName (unchanged)
       includes/config.example.php template (Doanh's packet version + the $tmdbToken line)
       about.php                   placeholder with section headings + TMDb/JustWatch credits
-      images/placeholder-poster.png, database/*.sql   (unchanged)
+      database/schema.sql         Oct 2 update: every table is utf8mb4 (accented titles)
+      images/placeholder-poster.png, database/starter_data*.sql   (unchanged)
 
-  ALL_combined/project1/ (zip only) A + B + C already merged = ready to upload.
+  UPLOAD_Doanh/project1/   (zip only) A + B + C merged, without tools/: what Doanh uploads
+  UPLOAD_Alyssa/project1/  (zip only) A + B + C merged, with tools/: what Alyssa uploads
+
+  WHO_IMPORTS_WHAT.txt   step-by-step list of uploads and phpMyAdmin imports for each of us
 
 The real require_login.php is in B (Alyssa's file). It replaces the empty
 placeholder in Drive's C folder, so every page now needs a demo user.
 
 
 HOW TO TRY IT
-  1. Upload ALL_combined/project1 to public_html/project1 (or merge A + B + C yourself;
-     the includes and database folders combine).
-  2. includes/config.example.php -> copy to config.php, fill in your login.
-  3. phpMyAdmin: import schema.sql, starter_data.sql, starter_data_demo1.sql.
-  4. Open ~YOURUSERNAME/project1/ (index.php), pick a demo user.
+  Follow WHO_IMPORTS_WHAT.txt. In short: upload your UPLOAD_ folder, make config.php,
+  import schema.sql, starter_data.sql, starter_data_demo1.sql, open index.php.
   Library, Settings and the Tonight button still say "Not Found": those are week 2.
   Until tmdb_seed.php runs, every movie has popularity 0 and no poster, so
   "Popular right now" is alphabetical and cards show the placeholder.
@@ -78,6 +79,7 @@ BEYOND CLASS MATERIAL (small, each explained in a comment)
   - mysqli_report(MYSQLI_REPORT_OFF) in db_connect.php: newer PHP stops the page
     on any SQL error. This line keeps the class-style if (!$result) checks working.
   - mysqli_set_charset(..., "utf8mb4") (from Alyssa's notes) for accented titles.
+    It matches the Oct 2 schema.sql, where every table is utf8mb4.
   - index.php: LEFT JOIN + COUNT + GROUP BY for the "N saved movies" line.
   - CSS: variables (:root), grid, aspect-ratio, and radio buttons styled as "chips"
     (the real radio stays in the page for keyboard and screen-reader users).
@@ -96,6 +98,8 @@ TESTED LOCALLY (PHP 8.3 + MariaDB, the real schema and starter data)
       saving as Doanh never changes Jordan's rows
   [x] Tonight: all field names/values above, 19 genres from the table, checkboxes on
   [x] Looks right at desktop width and at phone width (390px)
+  [x] Oct 2 schema.sql: all 8 tables utf8mb4; "Amélie" and "WALL·E" save, search and
+      display correctly through Discover and libraryProcess
   Not tested: tmdb_seed.php against the live TMDb API (needs Alyssa's token).
 
 AI Use Log line:

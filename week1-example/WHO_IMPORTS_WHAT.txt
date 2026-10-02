@@ -1,0 +1,54 @@
+WHO IMPORTS WHAT INTO KEYMAKER (week 1 example)
+================================================
+Each of us has our OWN Keymaker account and our OWN database (YOURUSERNAME_db),
+so each of us does every step below on our own account.
+
+Two kinds of "import":
+  UPLOAD  = copy files into public_html/project1 (PhpStorm Deployment, Cyberduck or FileZilla)
+  IMPORT  = phpMyAdmin > click YOURUSERNAME_db > Import tab > Choose File > Go
+            (the .sql files are imported from your computer; they don't need to be on Keymaker)
+
+Already imported the OLD schema.sql? Import the new one again (step 3).
+It wipes our 8 tables and recreates them as utf8mb4, then re-import the data files.
+Test saves are lost, which is fine at this stage.
+
+
+DOANH
+-----
+ 1. UPLOAD  the folder  UPLOAD_Doanh/project1  ->  public_html/project1
+            (A + B + C without tools/. Doanh needs Alyssa's login files too:
+             once require_login.php is real, every page sends you to index.php first,
+             and the Save button posts to libraryProcess.php.)
+ 2. In public_html/project1/includes: copy config.example.php to config.php,
+    fill in YOUR username, password and YOURUSERNAME_db. Leave $tmdbToken empty.
+ 3. IMPORT  database/schema.sql            (8 empty tables, utf8mb4)
+ 4. IMPORT  database/starter_data.sql      (19 genres, 8 services, 3 demo users, 25 movies, Jordan's history)
+ 5. IMPORT  database/starter_data_demo1.sql  (220 more movies + Alyssa & Mom's history)
+ 6. Check in phpMyAdmin's SQL tab:
+       SELECT COUNT(*) FROM titles;        -> 245
+       SELECT COUNT(*) FROM user_titles;   -> 167
+ 7. Open  http://keymaker.vrac.iastate.edu/~YOURUSERNAME/project1/  and pick a demo user.
+ LATER THIS WEEK: when Alyssa posts full_database_DATE.sql (posters + streaming data),
+    IMPORT that one file. It replaces steps 3-5.
+
+
+ALYSSA
+------
+ 1. UPLOAD  the folder  UPLOAD_Alyssa/project1  ->  public_html/project1
+            (A + B + C including tools/tmdb_seed.php and database/catalog_titles.csv)
+ 2. includes/config.php: your login AND $tmdbToken (the long API Read Access Token).
+ 3. IMPORT  database/schema.sql
+ 4. IMPORT  database/starter_data.sql
+ 5. IMPORT  database/starter_data_demo1.sql
+ 6. Same checks as Doanh (245 titles, 167 user_titles); log in once as each demo user.
+ 7. Open  ~YOURUSERNAME/project1/tools/tmdb_seed.php , click "Next batch" until
+    "Finished all 245 movies". Read the SEARCHED / NOT FOUND / WARNING lines.
+    (If it says it can't write the file, make database/ writable for a moment.)
+ 8. Download database/starter_data_tmdb.sql from Keymaker, then IMPORT it.
+ 9. EXPORT for Doanh: phpMyAdmin > YOURUSERNAME_db > Export > Custom > only our 8 tables >
+    tick "Add DROP TABLE..." > Go. Put full_database_DATE.sql in Drive (folder 3).
+10. DELETE tools/tmdb_seed.php from Keymaker (and database/starter_data_tmdb.sql if you like).
+
+
+NEVER UPLOAD OR SHARE
+  includes/config.php (except onto your own Keymaker). It is not in this zip.

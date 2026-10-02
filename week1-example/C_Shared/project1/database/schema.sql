@@ -7,6 +7,8 @@
 -- deletes tables named users, titles, genres, title_genres, services,
 -- title_services, user_titles and user_services if they exist. (The class
 -- example tables sales, products and images are not touched.)
+-- Every table uses utf8mb4 so movie titles with accents or special
+-- characters (like Amélie or WALL·E) save and display correctly.
 
 DROP TABLE IF EXISTS user_services;
 DROP TABLE IF EXISTS user_titles;
@@ -22,7 +24,7 @@ CREATE TABLE users (
     user_id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(30) NOT NULL UNIQUE,
     display_name VARCHAR(50) NOT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- One row per movie (TV later: media_type = 'tv')
 -- media_type + tmdb_id is the movie's identity, so the same movie
@@ -39,35 +41,35 @@ CREATE TABLE titles (
     popularity_score DECIMAL(10,3) NOT NULL DEFAULT 0,
     updated_at DATETIME NULL,
     UNIQUE (media_type, tmdb_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- One row per genre
 CREATE TABLE genres (
     genre_id INT AUTO_INCREMENT PRIMARY KEY,
     tmdb_genre_id INT NULL UNIQUE,
     genre_name VARCHAR(40) NOT NULL UNIQUE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Which genres a movie has (a movie can have several)
 CREATE TABLE title_genres (
     title_id INT NOT NULL,
     genre_id INT NOT NULL,
     PRIMARY KEY (title_id, genre_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- One row per streaming service
 CREATE TABLE services (
     service_id INT AUTO_INCREMENT PRIMARY KEY,
     service_name VARCHAR(40) NOT NULL UNIQUE,
     tmdb_provider_id INT NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Which services carry a movie
 CREATE TABLE title_services (
     title_id INT NOT NULL,
     service_id INT NOT NULL,
     PRIMARY KEY (title_id, service_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- What one user thinks about one movie (only one row per user + movie)
 -- status:      'none', 'interested', 'watched', 'not_interested'
@@ -82,11 +84,11 @@ CREATE TABLE user_titles (
     date_added DATETIME NOT NULL,
     updated_at DATETIME NOT NULL,
     PRIMARY KEY (user_id, title_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Which services a user has
 CREATE TABLE user_services (
     user_id INT NOT NULL,
     service_id INT NOT NULL,
     PRIMARY KEY (user_id, service_id)
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
